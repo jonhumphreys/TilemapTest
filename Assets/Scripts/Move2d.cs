@@ -17,54 +17,44 @@ public class Move2D : MonoBehaviour
 
     private void Update()
     {
-        currentMovementInput = GetCombinedInput();
+        GetCombinedInput();
         UpdateAnimator();
         UpdateSpriteDirection();
         ApplyMovement();
     }
     
+    // Auto-assigns component references if they weren't set in the Inspector
     private void InitializeComponents()
     {
         if (SpriteRenderer == null)
-        {
             SpriteRenderer = GetComponent<SpriteRenderer>();
-        }
         
         if (Animator == null)
-        {
             Animator = GetComponent<Animator>();
-        }
         
         if (KeyboardInput == null)
-        {
             KeyboardInput = GetComponent<KeyboardInput>();
-        }
         
         if (GamepadInput == null)
-        {
             GamepadInput = GetComponent<GamepadInput>();
-        }
     }
 
-    private Vector2 GetCombinedInput()
+    // Gamepad input takes priority over keyboard when active
+    private void GetCombinedInput()
     {
         Vector2 keyboardMovement = GetKeyboardMovement();
         Vector2 gamepadMovement = GetGamepadMovement();
         
         if (HasGamepadInput(gamepadMovement))
-        {
-            return gamepadMovement;
-        }
-        
-        return keyboardMovement;
+            currentMovementInput = gamepadMovement;
+        else
+            currentMovementInput = keyboardMovement;
     }
 
     private Vector2 GetKeyboardMovement()
     {
         if (KeyboardInput == null)
-        {
             return Vector2.zero;
-        }
         
         return KeyboardInput.GetMovement();
     }
@@ -72,9 +62,7 @@ public class Move2D : MonoBehaviour
     private Vector2 GetGamepadMovement()
     {
         if (GamepadInput == null)
-        {
             return Vector2.zero;
-        }
         
         return GamepadInput.GetMovement();
     }
@@ -87,9 +75,7 @@ public class Move2D : MonoBehaviour
     private void UpdateAnimator()
     {
         if (Animator == null)
-        {
             return;
-        }
         
         bool isWalking = IsMoving();
         Animator.SetBool("IsWalking", isWalking);
@@ -100,21 +86,16 @@ public class Move2D : MonoBehaviour
         return currentMovementInput.sqrMagnitude > 0f;
     }
 
+    // Flips sprite horizontally based on movement direction (doesn't flip for vertical-only movement)
     private void UpdateSpriteDirection()
     {
         if (SpriteRenderer == null)
-        {
             return;
-        }
 
         if (IsMovingLeft())
-        {
             SpriteRenderer.flipX = true;
-        }
         else if (IsMovingRight())
-        {
             SpriteRenderer.flipX = false;
-        }
     }
 
     private bool IsMovingLeft()
@@ -127,12 +108,14 @@ public class Move2D : MonoBehaviour
         return currentMovementInput.x > 0f;
     }
 
+    // Directly modifies transform.position (not using physics)
     private void ApplyMovement()
     {
         Vector3 movementDelta = CalculateMovementDelta();
         transform.position = transform.position + movementDelta;
     }
 
+    // Multiplies by Time.deltaTime for frame-rate independent movement
     private Vector3 CalculateMovementDelta()
     {
         return (Vector3)(currentMovementInput * Speed * Time.deltaTime);

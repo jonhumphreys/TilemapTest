@@ -15,6 +15,7 @@ public class KeyboardInput : MonoBehaviour
         float verticalInput = GetVerticalInput();
 
         Vector2 movement = new Vector2(horizontalInput, verticalInput);
+        // Normalize diagonal movement so player doesn't move faster diagonally
         movement = AdjustForDiagonalMovement(movement);
         
         return movement;
@@ -55,6 +56,7 @@ public class KeyboardInput : MonoBehaviour
         return Keyboard.current == null;
     }
 
+    // Returns -1 for left (A), +1 for right (D), or 0 for neither/both
     private float GetHorizontalInput()
     {
         float horizontal = 0f;
@@ -72,6 +74,7 @@ public class KeyboardInput : MonoBehaviour
         return horizontal;
     }
 
+    // Returns -1 for down (S), +1 for up (W), or 0 for neither/both
     private float GetVerticalInput()
     {
         float vertical = 0f;
@@ -119,6 +122,7 @@ public class KeyboardInput : MonoBehaviour
         return movement;
     }
 
+    // sqrMagnitude > 1 means both X and Y have values (diagonal movement)
     private bool IsDiagonalMovement(Vector2 movement)
     {
         return movement.sqrMagnitude > 1f;

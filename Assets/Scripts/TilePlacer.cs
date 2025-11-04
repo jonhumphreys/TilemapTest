@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Tilemaps;
 
+// Allows the player to place tiles on a tilemap at their current position
 public class TilePlacer : MonoBehaviour
 {
     public Tilemap InteractTilemap;
@@ -16,6 +17,7 @@ public class TilePlacer : MonoBehaviour
         }
     }
 
+    // Returns true if either keyboard OR gamepad place button was pressed
     private bool WasPlaceButtonPressed()
     {
         bool keyboardPressed = IsKeyboardPlacePressed();
@@ -56,10 +58,12 @@ public class TilePlacer : MonoBehaviour
             return;
         }
         
+        // Converts player's world position to the nearest tilemap grid cell
         Vector3Int cellPosition = GetCellPositionAtPlayer();
         InteractTilemap.SetTile(cellPosition, TileToPlace);
     }
 
+    // Converts world coordinates to tilemap grid coordinates
     private Vector3Int GetCellPositionAtPlayer()
     {
         return InteractTilemap.WorldToCell(transform.position);

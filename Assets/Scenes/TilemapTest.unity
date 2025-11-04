@@ -3496,7 +3496,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Move2D
   Speed: 6
-  Animator: {fileID: 0}
+  Animator: {fileID: 2058434821}
   SpriteRenderer: {fileID: 2058434816}
   KeyboardInput: {fileID: 2058434819}
   GamepadInput: {fileID: 2058434818}

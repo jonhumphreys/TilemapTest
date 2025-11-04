@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Handles when the player enters an elevated area (e.g., climbing up a mountain)
 public class ElevationEntry : MonoBehaviour
 {
+    // Colliders that block the player when at ground level (disabled when elevated)
     public List<Collider2D> MountainColliders;
+    // Colliders that keep the player from falling off edges when elevated (enabled when elevated)
     public List<Collider2D> BoundaryColliders;
 
     private const int ELEVATED_SORTING_ORDER = 15;
@@ -12,10 +15,13 @@ public class ElevationEntry : MonoBehaviour
     {
         if (IsPlayer(other))
         {
+            // Allow player to walk through the mountain now that they're elevated
             DisableMountainColliders();
+            // Prevent player from walking off the elevated area
             EnableBoundaryColliders();
         }
 
+        // Changes the sprite's rendering layer to appear above ground-level objects
         MovePlayerUp(other);
     }
 

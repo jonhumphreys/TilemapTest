@@ -74,6 +74,8 @@ public class Attacker : MonoBehaviour
             return;
         }
         
+        // Manually plays the attack animation (no blending/transitions)
+        Animator.Play(ATTACK_ANIMATION_NAME);
         Animator.Play(ATTACK_ANIMATION_NAME);
     }
 }
